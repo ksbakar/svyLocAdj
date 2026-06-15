@@ -90,7 +90,7 @@ install.packages("devtools")
 Install the latest development version from GitHub:
 
 ```r
-devtools::install_github("USERNAME/svyLocAdj")
+devtools::install_github("ksbakar/svyLocAdj")
 ```
 
 Replace `USERNAME` with the GitHub username or organization hosting the repository.
