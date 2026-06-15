@@ -1,0 +1,27 @@
+exportPattern("^[[:alpha:]]+")
+
+import(rstan)
+import(sf)
+import(geodist)
+import(ggplot2)
+import(dplyr)
+import(tibble)
+import(spTimer)
+import(spTDyn)
+
+importFrom("stats", "median", "quantile", "sd",
+           "dbinom", "dnorm", "dpois", "rnorm", "rgamma", 
+           "as.formula", "model.frame", "model.matrix")
+
+importFrom("spTimer", "Formula.matrix")
+
+S3method(print,svyLocAdj)
+S3method(plot,svyLocAdj)
+S3method(summary,svyLocAdj)
+
+export(
+       "svymodel",
+	   "print.svyLocAdj",
+	   "plot.svyLocAdj",
+	   "summary.svyLocAdj"
+	   )

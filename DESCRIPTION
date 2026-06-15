@@ -1,0 +1,21 @@
+Package: svyLocAdj
+Type: Package
+Title: Modelling Demographic and Health Survey (DHS) data with adjustment for location perturbations
+Version: 1.0.1
+Date: 2026-05-01
+Authors@R: 
+    c(person(given = "K. Shuvo",
+             family = "Bakar",
+             role = c("aut", "cre"),
+             email = "shuvo.bakar@gmail.com",
+             comment = c(ORCID = "0000-0003-3215-4496")),
+      person(given = "Jahidur Rahman",
+             family = "Khan",
+             role = "ctb",
+             comment = c(ORCID = "0000-0002-3029-6303"))			 
+			 )
+Depends: R (>= 4.5)
+Description: What the package does (one paragraph).
+License:  GPL (>= 2)
+Imports: rstan, sf, geodist, ggplot2, dplyr, tibble, spTimer, spTDyn
+Encoding: UTF-8
