@@ -7,7 +7,6 @@ import(ggplot2)
 import(dplyr)
 import(tibble)
 import(spTimer)
-import(spTDyn)
 
 importFrom("stats", "median", "quantile", "sd",
            "dbinom", "dnorm", "dpois", "rnorm", "rgamma", 

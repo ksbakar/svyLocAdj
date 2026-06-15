@@ -27,6 +27,37 @@ data {
   real zeta_sd;
 }
 
+
+transformed data {
+  int Jr = 0;
+  int Ju = 0;
+
+  for (j in 1:J) {
+    if (ur[j] == 1)
+      Jr += 1;
+    else
+      Ju += 1;
+  }
+
+  array[Jr] int idx_r;
+  array[Ju] int idx_u;
+
+  {
+    int r = 1;
+    int u = 1;
+
+    for (j in 1:J) {
+      if (ur[j] == 1) {
+        idx_r[r] = j;
+        r += 1;
+      } else {
+        idx_u[u] = j;
+        u += 1;
+      }
+    }
+  }
+}
+
 parameters {
   vector[K] beta;
   vector[Q] zeta;
@@ -36,17 +67,11 @@ parameters {
   real<lower=0> sigma_y;          // residual SD
 }
 
-transformed parameters {
-  vector[K] OR_beta;
-  vector[Q] OR_zeta;
-}
-
 model {
   matrix[J, M] Dstar_phi;
   matrix[J, M] Psi;
   matrix[J, Q] Psi_eta;
   matrix[J, Q] zstar_hat;
-  matrix[N, Q] zzstar;
   vector[N] eta;
 
   // Priors
@@ -59,46 +84,35 @@ model {
   zeta ~ normal(zeta_mu, zeta_sd);
 
   // Spatial process
-  for (m in 1:M) {
-    for (j in 1:J) {
-      if (ur[j] == 1) {
-        Dstar[j, m] ~ normal(D_JxM[j, m], sigma_r_hat);
-      } else {
-        Dstar[j, m] ~ normal(D_JxM[j, m], sigma_u_hat);
-      }
-      Dstar_phi[j, m] = square(1 - square(Dstar[j, m] / phi));
-    }
-  }
+  Dstar[idx_r, ] ~ normal(D_JxM[idx_r, ], sigma_r_hat);
+  Dstar[idx_u, ] ~ normal(D_JxM[idx_u, ], sigma_u_hat);
+  Dstar_phi =
+    square(
+      rep_matrix(1.0, J, M)
+      - square(Dstar / phi)
+    );
 
-  Psi = MJJ * Dstar_phi;
-  Psi_eta = Psi * Sigma_diag;
+  //Psi = MJJ * Dstar_phi;
+  //Psi_eta = Psi * Sigma_diag;
+  Psi_eta = MJJ * (Dstar_phi * Sigma_diag);
 
-  for (q in 1:Q) {
-    for (j in 1:J) {
-      zstar_hat[j, q] =
-        z[j, q] + Psi_eta[j, q];
-      z[j, q] ~ normal(zstar[j, q], sigma_nu_hat);
-    }
-  }
-  zzstar = IMAT * zstar_hat;
+  z ~ normal(zstar, sigma_nu_hat);
+  zstar_hat = z + Psi_eta;
+
   // Linear predictor
-  eta = x * beta + zzstar * zeta;
+  eta = x * beta + IMAT * (zstar_hat * zeta);
   // Gaussian likelihood
   y ~ normal(eta, sigma_y);
 }
 
 generated quantities {
-
   vector[N] y_mean;
   vector[N] y_pred;
   vector[J] z_effect;
   vector[N] zstar_hat_scaled;
   z_effect = zstar * zeta;
   zstar_hat_scaled = IMAT * z_effect;
-  for (i in 1:N) {
-    real eta;
-    y_mean[i] = dot_product(x[i], beta) + zstar_hat_scaled[i];
-    // posterior predictive draw
-    y_pred[i] = normal_rng(y_mean[i], sigma_y);
-  }
+  y_mean = x * beta + zstar_hat_scaled;
+  for (i in 1:N)
+     y_pred[i] = normal_rng(y_mean[i], sigma_y);
 }
