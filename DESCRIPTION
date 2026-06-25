@@ -2,7 +2,7 @@ Package: svyLocAdj
 Type: Package
 Title: Modelling Demographic and Health Survey (DHS) data with adjustment for location perturbations
 Version: 1.0.1
-Date: 2026-05-01
+Date: 2026-06-01
 Authors@R: 
     c(person(given = "K. Shuvo",
              family = "Bakar",
@@ -12,7 +12,11 @@ Authors@R:
       person(given = "Jahidur Rahman",
              family = "Khan",
              role = "ctb",
-             comment = c(ORCID = "0000-0002-3029-6303"))			 
+             comment = c(ORCID = "0000-0002-3029-6303")),
+      person(given = "Bernard",
+             family = "Baffour",
+             role = "ctb",
+             comment = c(ORCID = "0000-0002-9820-2617"))			 
 			 )
 Depends: R (>= 4.5)
 Description: What the package does (one paragraph).
