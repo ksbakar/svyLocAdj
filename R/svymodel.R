@@ -35,7 +35,7 @@ svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
     res$results = out
     res$data = dat$data
     res$sp_data = dat$sp_data
-    class(res) <- "DHSadjust"
+    class(res) <- "svyLocAdj"
   }
   if(family%in%"gaussian"){
     cat(paste0("Bayesian model for continuous outcome ...\n"))
@@ -54,7 +54,7 @@ svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
     res$results = out
     res$data = dat$data
     res$sp_data = dat$sp_data
-    class(res) <- "DHSadjust"
+    class(res) <- "svyLocAdj"
   }
   if(family%in%"poisson"){
     cat(paste0("Bayesian model for count data ...\n"))
