@@ -1,5 +1,5 @@
 \name{plot.svyLocAdj}
-\alias{plot.svyLocAdj}
+\alias{plot}
 
 \title{Plot Method for svyLocAdj Objects}
 

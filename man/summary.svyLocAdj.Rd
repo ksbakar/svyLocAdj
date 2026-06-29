@@ -1,6 +1,6 @@
 \name{summary.svyLocAdj}
-\alias{summary.svyLocAdj}
-\title{Summary Method for svyLocAdj Objects}
+\alias{summary}
+\title{Summary for svyLocAdj Objects}
 \description{
 Produces a summary of a fitted \code{svyLocAdj} model, including
 fixed-effect parameter estimates, variability parameters, and model
