@@ -107,12 +107,12 @@ DHS cluster coordinates for confidentiality protection. Spatial grids
 are constructed over the study region, and uncertainty arising from
 location displacement is incorporated into the estimation procedure.
 
-The returned object is of class \code{"DHSadjust"} and includes methods
+The returned object is of class \code{"svyLocAdj"} and includes methods
 for summarization and visualization.
 }
 
 \value{
-An object of class \code{"DHSadjust"} containing:
+An object of class \code{"svyLocAdj"} containing:
 
 \item{results}{
 Estimated model parameters, uncertainty measures, and model fit
@@ -155,18 +155,14 @@ out_bino = svymodel(formula = ch_stunt ~ age_of_child,
              urban_rural_var = c("URBAN_RURA"))
 out_bino
 summary(out_bino)
-plot(out_bino, type="para",
-               xlab = "Odds Ratio (95% CI)",
-               title = "Binomial model")
+plot(out_bino, type="para", title = "Binomial model")
 plot(out_bino, type="map")
 
 out_cont = svymodel(formula = hw70 ~ age_of_child,
                data = y, family = "gaussian")
 out_cont
 summary(out_cont)
-plot(out_cont, type="para",
-               xlab = "Estimate (95% CI)",
-               title = "Gaussian model")
+plot(out_cont, type="para", title = "Gaussian model")
 plot(out_cont, type="map")
 
 

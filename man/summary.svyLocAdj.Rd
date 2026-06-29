@@ -14,7 +14,7 @@ fit statistics based on the Watanabe--Akaike Information Criterion (WAIC).
 \arguments{
   \item{object}{
     An object of class \code{"svyLocAdj"} returned by
-    \code{\link{DHSadjust}}.
+    \code{\link{svyLocAdj}}.
   }
 
   \item{\dots}{

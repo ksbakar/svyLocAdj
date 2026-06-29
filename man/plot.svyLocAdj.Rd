@@ -11,16 +11,14 @@ parameter estimates and their uncertainty intervals.
 }
 
 \usage{
-\method{plot}{svyLocAdj}(x,
-type = c("map", "para"),
-title = "Forest Plot",
-...)
+\method{plot}{svyLocAdj}(x, type = c("map", "para"), title = "Forest Plot",
+                         drop_intercept = FALSE, ...)
 }
 
 \arguments{
 \item{x}{
 An object of class \code{"svyLocAdj"} returned by
-\code{\link{DHSadjust}}.
+\code{\link{svyLocAdj}}.
 }
 
 \item{type}{
@@ -35,6 +33,11 @@ Supported values are:
 \item{title}{
 Title used for the forest plot when \code{type = "para"}.
 }
+
+\item{drop_intercept}{
+TRUE or FALSE argument, if TRUE then plot intercept.
+}.
+
 
 \item{\dots}{
 Additional arguments passed to or from other methods.
@@ -96,8 +99,7 @@ plot(fit, type = "para")
 
 # Forest plot with custom title
 
-plot(fit, type = "para",
-title = "Adjusted Odds Ratios")
+plot(fit, type = "para", title = "Adjusted Odds Ratios")
 
 ## End(Not run)
 
