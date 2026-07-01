@@ -147,8 +147,10 @@ doi:10.1093/jrsssa/qnag068
 \examples{
 \dontrun{
 
+head(sample_data)
+
 out_bino = svymodel(formula = ch_stunt ~ age_of_child,
-             data = y, family = "binomial",
+             data = sample_data, family = "binomial",
              id_var = c("DHSCLUST"),
              coord_var = c("LONGNUM","LATNUM"),
              cluster_var = c("Precipitation_2020"),
@@ -156,10 +158,12 @@ out_bino = svymodel(formula = ch_stunt ~ age_of_child,
 out_bino
 summary(out_bino)
 plot(out_bino, type="para", title = "Binomial model")
+plot(out_bino, type="para", drop_intercept = TRUE,
+     title = "Binomial model")
 plot(out_bino, type="map")
 
 out_cont = svymodel(formula = hw70 ~ age_of_child,
-               data = y, family = "gaussian")
+               data = sample_data, family = "gaussian")
 out_cont
 summary(out_cont)
 plot(out_cont, type="para", title = "Gaussian model")

@@ -36,12 +36,10 @@ Title used for the forest plot when \code{type = "para"}.
 
 \item{drop_intercept}{
 TRUE or FALSE argument, if TRUE then plot intercept.
-}.
-
+}
 
 \item{\dots}{
 Additional arguments passed to or from other methods.
-Currently ignored.
 }
 }
 
@@ -63,16 +61,6 @@ scale.
 The parameter plot is useful for assessing the magnitude and direction
 of covariate effects, while the map plot provides a visual summary of
 the spatial component of the model.
-}
-
-\value{
-Called for its side effect of producing a graphical display.
-
-The function returns the generated plot object invisibly.
-}
-
-\author{
-Your Name
 }
 
 \seealso{
@@ -100,6 +88,10 @@ plot(fit, type = "para")
 # Forest plot with custom title
 
 plot(fit, type = "para", title = "Adjusted Odds Ratios")
+
+# Plot map
+
+plot(fit, type = "map")
 
 ## End(Not run)
 

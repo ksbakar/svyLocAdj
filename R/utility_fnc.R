@@ -138,7 +138,15 @@ prepare_stan_data <- function(f,
     W %*%
     (1 - z[,1] %*% solve(t(z[,1]) %*% z[,1]) %*% t(z[,1]))
   ## prepare QQ and eigen decomposition - initial
-  x <- model.matrix(f, data)
+  #x <- model.matrix(f, data)
+  x <- spTimer::Formula.matrix(formula=f, data=data)
+  if(!is.null(x$x.names.sp)){
+    x <- x$X # need to check based on the spatially varyin gmodel..
+  }
+  else{
+    x <- x$X
+  }
+  ##
   phi <- max(d)
   QQ <- t(MW %*% (1 - (d/phi)^2)^2) %*% (diag(W)*1 - W) %*% (MW %*% (1 - (d/phi)^2)^2)
   eigen_QQ <- eigen(QQ)

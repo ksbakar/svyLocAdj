@@ -13,6 +13,7 @@ importFrom("stats", "median", "quantile", "sd",
            "as.formula", "model.frame", "model.matrix")
 
 importFrom("spTimer", "Formula.matrix")
+importFrom("spTDyn", "sp")
 
 S3method(print,svyLocAdj)
 S3method(plot,svyLocAdj)

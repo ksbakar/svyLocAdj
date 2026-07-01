@@ -20,7 +20,6 @@ svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
   ##
   if(family%in%"binomial"){
     cat(paste0("Bayesian model for binary outcome ...\n"))
-    cat("Running Maximum A Posteriori (MAP) estimate ...\n")
     cat("...\n")
     dat <- prepare_stan_data(f = formula,  data = data,  id_var = id_var,
            coord_var = coord_var, cluster_var = cluster_var,
@@ -39,7 +38,6 @@ svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
   }
   if(family%in%"gaussian"){
     cat(paste0("Bayesian model for continuous outcome ...\n"))
-    cat("Running Maximum A Posteriori (MAP) estimate ...\n")
     cat("...\n")
     dat <- prepare_stan_data(f = formula,  data = data,  id_var = id_var,
                              coord_var = coord_var, cluster_var = cluster_var,
@@ -58,7 +56,6 @@ svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
   }
   if(family%in%"poisson"){
     cat(paste0("Bayesian model for count data ...\n"))
-    cat("Running Maximum A Posteriori (MAP) estimate ...\n")
     cat("...\n")
     dat <- prepare_stan_data(f = formula,  data = data,  id_var = id_var,
                              coord_var = coord_var, cluster_var = cluster_var,

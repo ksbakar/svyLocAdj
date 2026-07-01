@@ -4,7 +4,7 @@
 \description{
 Produces a summary of a fitted \code{svyLocAdj} model, including
 fixed-effect parameter estimates, variability parameters, and model
-fit statistics based on the Watanabe--Akaike Information Criterion (WAIC).
+fit statistics based on the Watanabe-Akaike Information Criterion (WAIC).
 }
 
 \usage{
@@ -31,20 +31,11 @@ The summary method displays:
   \item Estimated fixed parameters.
   \item Estimated variability parameters.
   \item The log pointwise predictive density (lppd).
-  \item An approximation to the Watanabe--Akaike Information Criterion (WAIC).
+  \item An approximation to the Watanabe-Akaike Information Criterion (WAIC).
 }
 
 The method is intended for a concise inspection of model estimates and
 overall model fit.
-}
-
-\value{
-The function is called for its side effect of printing a summary to the
-console. It returns \code{NULL} invisibly.
-}
-
-\author{
-Your Name
 }
 
 \seealso{
