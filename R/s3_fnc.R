@@ -12,7 +12,7 @@ print.svyLocAdj <- function(x, ...){
 
 plot.svyLocAdj <- function(x, type = "map",
                            title = "Forest Plot of Fixed Effects",
-                           drop_intercept = FALSE,
+                           drop_intercept = TRUE,
                            ...){
   # type=="para" or "map"
   if(type=="map"){
@@ -37,10 +37,10 @@ plot.svyLocAdj <- function(x, type = "map",
                        linewidth = 0.8,
                        color = "gray35") +
         geom_vline(xintercept = 1, linetype = "dashed", linewidth = 0.8, color = "gray50") +
-        scale_x_log10(
-          breaks = scales::pretty_breaks(n = 6),
-          labels = scales::label_number(accuracy = 0.01)
-        ) +
+        #scale_x_log10(
+        #  breaks = scales::pretty_breaks(n = 6),
+        #  labels = scales::label_number(accuracy = 0.01)
+        #) +
         labs(
           x = "Odds Ratio",
           y = NULL,
@@ -74,10 +74,6 @@ plot.svyLocAdj <- function(x, type = "map",
                        linewidth = 0.8,
                        color = "gray35") +
         geom_vline(xintercept = 1, linetype = "dashed", linewidth = 0.8, color = "gray50") +
-        scale_x_log10(
-          breaks = scales::pretty_breaks(n = 6),
-          labels = scales::label_number(accuracy = 0.01)
-        ) +
         labs(
           x = "Estimate",
           y = NULL,
@@ -111,10 +107,6 @@ plot.svyLocAdj <- function(x, type = "map",
                        linewidth = 0.8,
                        color = "gray35") +
         geom_vline(xintercept = 1, linetype = "dashed", linewidth = 0.8, color = "gray50") +
-        scale_x_log10(
-          breaks = scales::pretty_breaks(n = 6),
-          labels = scales::label_number(accuracy = 0.01)
-        ) +
         labs(
           x = "Risk Ratio",
           y = NULL,

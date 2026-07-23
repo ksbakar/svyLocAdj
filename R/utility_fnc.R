@@ -340,7 +340,8 @@ evolve_summary_binary <- function(data, out, cluster_var,
     simulations = tibble(data.frame(fixed_simulations,variability_simulations)),
     cluster_summary =  cluster_summary,
     zstar_scaled = zstar_hat,
-    lppd = lppd, waic_approx = waic_approx
+    #lppd = lppd,
+    waic_approx = waic_approx
   ))
   ##
 }
@@ -494,7 +495,8 @@ evolve_summary_gaussian <- function(data, out, cluster_var,
     simulations = tibble(data.frame(fixed_simulations,variability_simulations)),
     cluster_summary =  cluster_summary,
     zstar_scaled = zstar_hat,
-    lppd = lppd, waic_approx = waic_approx
+    #lppd = lppd,
+    waic_approx = waic_approx
   ))
   ##
 }
@@ -660,7 +662,8 @@ evolve_summary_poisson <- function(data, out, cluster_var,
          simulations = tibble(data.frame(fixed_simulations,variability_simulations)),
          cluster_summary = cluster_summary,
          zstar_scaled = zstar_hat,
-         lppd =  lppd, waic_approx = waic_approx
+         #lppd =  lppd,
+         waic_approx = waic_approx
     )
   )
 }
