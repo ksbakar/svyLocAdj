@@ -121,7 +121,7 @@ prepare_stan_data <- function(f,
   }
   W <- fnc_w(cluster_J = layer_data$data$id_J,
              layer_m = layer_data$data$id_m)
-  ## prepare cluster-level data
+  ## prepare cluster-level data (observed)
   z <- unique(data[, c(cluster_var,coord_var)]); z <- z[,1]
   ## IMAT matrix - initial
   Ind <- data.frame(clst = data[, id_var])
@@ -133,7 +133,7 @@ prepare_stan_data <- function(f,
   ur <- unique(data[,c(urban_rural_var,id_var)])
   ur <- as.numeric(as.factor(ur[,1]))
   ## MW matrix - inital
-  z <- as.matrix(z)
+  z <- as.matrix(z) # observed
   MW <- (1 - z[,1] %*% solve(t(z[,1]) %*% z[,1]) %*% t(z[,1])) %*%
     W %*%
     (1 - z[,1] %*% solve(t(z[,1]) %*% z[,1]) %*% t(z[,1]))
@@ -170,9 +170,13 @@ prepare_stan_data <- function(f,
       }
     }
   }
+  Dstar[Dstar < 0] <- 0.001
   Psi <- M_JxJ %*% (1 - (Dstar / phi)^2)^2
   Psi_eta <- Psi %*% Sigma_diag
-  zstar <- z[,1] + Psi_eta
+  #
+  ck <- fields::Krig(D_JxM, z[,1])
+  zstar <- predict(ck, x=Dstar) # true - initial
+  #zstar <- z[,1] + Psi_eta  # true - initial
   ## scale z - initial
   z_scale <- scale(cbind(z[,1], zstar))
   #X_block <- matrix(0, N, J)
