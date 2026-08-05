@@ -94,7 +94,7 @@
     vector[J] z_effect;
     vector[N] zstar_hat_scaled;
     z_effect = zstar * zeta;          // Jxq * q => J
-    zstar_hat_scaled = IMAT * z_effect;     // NxJ * J => N
+    zstar_hat_scaled = IMAT * z_effect;    // NxJ * J => N
     for (i in 1:N) {
       real eta = dot_product(x[i], beta) + zstar_hat_scaled[i];
       y_prob[i] = inv_logit(eta);

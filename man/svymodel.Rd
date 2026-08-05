@@ -149,6 +149,8 @@ doi:10.1093/jrsssa/qnag068
 
 head(sample_data)
 
+# logistic model
+
 out_bino = svymodel(formula = ch_stunt ~ age_of_child,
              data = sample_data, family = "binomial",
              id_var = c("DHSCLUST"),
@@ -162,8 +164,16 @@ plot(out_bino, type="para", drop_intercept = TRUE,
      title = "Binomial model")
 plot(out_bino, type="map")
 
-out_cont = svymodel(formula = hw70 ~ age_of_child,
-               data = sample_data, family = "gaussian")
+# gaussian model
+
+sample_data$hw70_scale <- scale(sample_data$hw70)
+
+out_cont = svymodel(formula = hw70_scale ~ age_of_child,
+             data = sample_data, family = "gaussian",
+             id_var = c("DHSCLUST"),
+             coord_var = c("LONGNUM","LATNUM"),
+             cluster_var = c("Precipitation_2020"),
+             urban_rural_var = c("URBAN_RURA"))
 out_cont
 summary(out_cont)
 plot(out_cont, type="para", title = "Gaussian model")

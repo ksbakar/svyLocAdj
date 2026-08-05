@@ -174,9 +174,7 @@ prepare_stan_data <- function(f,
   Psi <- M_JxJ %*% (1 - (Dstar / phi)^2)^2
   Psi_eta <- Psi %*% Sigma_diag
   #
-  ck <- fields::Krig(D_JxM, z[,1])
-  zstar <- predict(ck, x=Dstar) # true - initial
-  #zstar <- z[,1] + Psi_eta  # true - initial
+  zstar <- z[,1] + Psi_eta  # true - initial
   ## scale z - initial
   z_scale <- scale(cbind(z[,1], zstar))
   #X_block <- matrix(0, N, J)
@@ -185,14 +183,14 @@ prepare_stan_data <- function(f,
   ## data list
   data_list <- list(
     N = nrow(x),
-    y = model.frame(f, data)[,1],
+    y = c(model.frame(f, data)[,1]),
     K = ncol(x),
     Q = 1,
     J = J,
     M = M,
     x = x,
-    z = as.matrix(z_scale[,1]),
-    zstar = as.matrix(z_scale[,2]),
+    z = as.matrix(z_scale[,1]), # observed
+    zstar = as.matrix(z_scale[,2]), # true - initial
     ur = ur,
     D_JxM = D_JxM,
     Dstar = Dstar,
@@ -332,9 +330,9 @@ evolve_summary_binary <- function(data, out, cluster_var,
                         prob = df$pred_prob, log = TRUE)
   lppd <- sum(log_lik_vec); waic_approx <- -2 * (lppd)
   ## extract zstart values to store
-  zstar_hat <- out$par[grep("zstar_hat_scaled", names(out$par))]
-  zstar_hat <- matrix(zstar_hat, nrow = nrow(df))
-  zstar_hat <- data.frame(clst = df$clst, zstar_hat)
+  zstar_hat <- out$par[grep("z_effect", names(out$par))]
+  zstar_hat <- matrix(zstar_hat, nrow = length(unique(df$clst)))
+  zstar_hat <- data.frame(clst = unique(df$clst), zstar_hat)
   names(zstar_hat)[-1] = c(cluster_var)
   zstar_hat <- tibble(zstar_hat)
   ##
@@ -343,7 +341,7 @@ evolve_summary_binary <- function(data, out, cluster_var,
     variability_parameters = round(variability_summary, digits),
     simulations = tibble(data.frame(fixed_simulations,variability_simulations)),
     cluster_summary =  cluster_summary,
-    zstar_scaled = zstar_hat,
+    zstarEffect_scaled = zstar_hat,
     #lppd = lppd,
     waic_approx = waic_approx
   ))
@@ -486,9 +484,9 @@ evolve_summary_gaussian <- function(data, out, cluster_var,
                        sd = variability_summary[4,1],log = TRUE)
   lppd <- sum(log_lik_vec); waic_approx <- -2 * (lppd)
   ## extract zstart values to store
-  zstar_hat <- out$par[grep("zstar_hat_scaled", names(out$par))]
-  zstar_hat <- matrix(zstar_hat, nrow = nrow(df))
-  zstar_hat <- data.frame(clst = df$clst, zstar_hat)
+  zstar_hat <- out$par[grep("z_effect", names(out$par))]
+  zstar_hat <- matrix(zstar_hat, nrow = length(unique(df$clst)))
+  zstar_hat <- data.frame(clst = unique(df$clst), zstar_hat)
   names(zstar_hat)[-1] = c(cluster_var)
   zstar_hat <- tibble(zstar_hat)
   ##
@@ -498,7 +496,7 @@ evolve_summary_gaussian <- function(data, out, cluster_var,
     #simulations = as_draws_df(data.frame(fixed_simulations,variability_simulations)),
     simulations = tibble(data.frame(fixed_simulations,variability_simulations)),
     cluster_summary =  cluster_summary,
-    zstar_scaled = zstar_hat,
+    zstarEffect_scaled = zstar_hat,
     #lppd = lppd,
     waic_approx = waic_approx
   ))
@@ -652,20 +650,17 @@ evolve_summary_poisson <- function(data, out, cluster_var,
   )
   lppd <- sum(log_lik_vec)
   waic_approx <- -2 * lppd
-  zstar_hat <- out$par[grep("zstar_hat_scaled", names(out$par))]
-  zstar_hat <- matrix(zstar_hat,nrow = nrow(df))
-  zstar_hat <- data.frame(
-    clst = df$clst,
-    zstar_hat
-  )
-  names(zstar_hat)[-1] <- cluster_var
+  zstar_hat <- out$par[grep("z_effect", names(out$par))]
+  zstar_hat <- matrix(zstar_hat, nrow = length(unique(df$clst)))
+  zstar_hat <- data.frame(clst = unique(df$clst), zstar_hat)
+  names(zstar_hat)[-1] = c(cluster_var)
   zstar_hat <- tibble(zstar_hat)
   return(
     list(fixed_parameters = round(fixed_summary, digits),
          variability_parameters = round(variability_summary, digits),
          simulations = tibble(data.frame(fixed_simulations,variability_simulations)),
          cluster_summary = cluster_summary,
-         zstar_scaled = zstar_hat,
+         zstarEffect_scaled = zstar_hat,
          #lppd =  lppd,
          waic_approx = waic_approx
     )

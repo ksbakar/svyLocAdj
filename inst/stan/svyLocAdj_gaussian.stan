@@ -1,6 +1,6 @@
 data {
   int<lower=0> N;                  // number of observations
-  vector[N] y;                     // continuous outcome
+  vector[N] y;                      // continuous outcome
   int<lower=0> K;                  // number of individual predictors
   int<lower=0> Q;                  // number of cluster predictors
   int<lower=0> J;                  // number of clusters
@@ -56,8 +56,7 @@ model {
       } else {              // urban
         Dstar[j,m] ~ normal(D_JxM[j,m], sigma_u_hat);
       }
-      Dstar_phi[j,m] =
-        square(1 - square(Dstar[j,m] / phi));
+      Dstar_phi[j,m] = square(1 - square(Dstar[j,m] / phi));
     }
   }
   
