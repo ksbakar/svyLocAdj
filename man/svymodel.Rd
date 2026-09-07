@@ -179,7 +179,21 @@ summary(out_cont)
 plot(out_cont, type="para", title = "Gaussian model")
 plot(out_cont, type="map")
 
+# gaussian spatially varying model
 
+sample_data$hw70_scale <- scale(sample_data$hw70)
+
+out_cont_sp = svymodel(formula = hw70_scale ~ age_of_child,
+             data = sample_data, family = "gaussian_sp",
+             id_var = c("DHSCLUST"),
+             coord_var = c("LONGNUM","LATNUM"),
+             cluster_var = c("Precipitation_2020"),
+             urban_rural_var = c("URBAN_RURA"))
+out_cont_sp
+summary(out_cont_sp)
+plot(out_cont_sp, type="para", title = "Varying model")
+plot(out_cont_sp, type="map")
+out_cont_sp$results$spatial_parameters
 
 }
 }

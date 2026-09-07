@@ -5,7 +5,7 @@
 
 svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
                    data = y,
-                   family = "binomial", #gaussian, #poisson
+                   family = "binomial", #gaussian, #poisson, #gaussian_sp
                    id_var = c("DHSCLUST"),
                    coord_var = c("LONGNUM","LATNUM"),
                    cluster_var = c("Precipitation_2020"),
@@ -47,6 +47,26 @@ svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
                              beta_prior = beta_prior, zeta_prior = zeta_prior)
     out <- run_fnc_gaussian(data = dat, cluster_var = cluster_var,
                           digits = digits, draws = draws)
+    out$family <- family
+    res <- NULL
+    res$results = out
+    res$data = dat$data
+    res$sp_data = dat$sp_data
+    class(res) <- "svyLocAdj"
+  }
+  if(family%in%"gaussian_sp"){
+    cat(paste0("Bayesian spatially varying model\n for continuous outcome ...\n"))
+    cat("...\n")
+    dat <- prepare_stan_data(f = formula,  data = data,  id_var = id_var,
+                             coord_var = coord_var, cluster_var = cluster_var,
+                             urban_rural_var = urban_rural_var, grid_x = grid_x,
+                             grid_y = grid_y, sigma_u_prior = sigma_u_prior,
+                             sigma_r_prior = sigma_r_prior, sigma_nu_prior = sigma_nu_prior,
+                             beta_prior = beta_prior, zeta_prior = zeta_prior)
+    dat$data_list_stan$zeta_sd <- diag(c(dat$W%*%rep(1,dat$data_list_stan$J))-dat$W)
+    #dat$data_list_stan$zeta_sd <- rowSums(c(dat$W%*%rep(1,dat$data_list_stan$J))-dat$W)
+    out <- run_fnc_gaussian_sp(data = dat, cluster_var = cluster_var,
+                            digits = digits, draws = draws)
     out$family <- family
     res <- NULL
     res$results = out

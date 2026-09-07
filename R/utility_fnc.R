@@ -1,4 +1,5 @@
 
+
 ################################################################################
 ## utility function
 ################################################################################
@@ -213,7 +214,7 @@ prepare_stan_data <- function(f,
          data = data.frame(clst = data[, id_var],
                            clst_var = data[, cluster_var],
                            model.frame(f, data)),
-         sp_data = layer_data))
+         sp_data = layer_data, W=W))
 }
 
 ## summary function for binary outcome
@@ -435,7 +436,7 @@ evolve_summary_gaussian <- function(data, out, cluster_var,
     "sigma_r_hat",
     "sigma_u_hat",
     "sigma_nu_hat",
-    "sigma_y"
+    "sigma_y_hat"
   )
   cov_para <- solve(
     -out$hessian[var_names, var_names]
@@ -525,6 +526,7 @@ run_fnc_gaussian <- function(data,
   para
   ##
 }
+
 
 ## summary function for poisson: count outcome
 
@@ -689,6 +691,164 @@ run_fnc_poisson <- function(data,
   para
   ##
 }
+
+
+## for gaussian-spatially varying: continuous outcome
+
+evolve_summary_gaussian_sp <- function(data, out, cluster_var,
+                                       digits = 2, sim = 10000,
+                                       cluster_summary = FALSE) {
+  ##
+  K <- data$data_list_stan$K
+  Q <- data$data_list_stan$Q
+  J <- data$data_list_stan$J
+  ## covariance matrix
+  #opt_cov <- solve(-out$hessian[1:(K + Q + J - 1), 1:(K + Q + J -1)])
+  opt_cov_beta <- solve(-out$hessian[1:(K), 1:(K)])
+  fixed_simulations <- list()
+  variability_simulations <- list()
+  post.beta.mn <- out$par[1:K]
+  post.beta.sd <- sqrt(diag(opt_cov_beta[1:K, 1:K]))
+  beta_summary <- matrix(NA, nrow = K, ncol = 3)
+  for (i in 1:K) {
+    sims <- rnorm(
+      sim,
+      mean = post.beta.mn[i],
+      sd = post.beta.sd[i]
+    )
+    fixed_simulations[[colnames(data$data_list_stan$x)[i]]] <- sims
+    beta_summary[i, ] <- quantile(
+      sims,
+      prob = c(0.5, 0.025, 0.975),
+      na.rm = TRUE
+    )
+  }
+  rownames(beta_summary) <- colnames(data$data_list_stan$x)
+  colnames(beta_summary) <- c(
+    "median",
+    "lower_95",
+    "upper_95"
+  )
+  opt_cov_zeta <- solve(-out$hessian[(K + 1):(K + Q*J), (K + 1):(K + Q*J)])
+  post.zeta.mn <- out$par[(K + 1):(K + Q*J)]
+  post.zeta.sd <- sqrt(diag(opt_cov_zeta))
+  zeta_summary <- matrix(NA, nrow = (Q*J), ncol = 3)
+  for (i in 1:(Q*J)) {
+    sims <- rnorm(
+      sim,
+      mean = post.zeta.mn[i],
+      sd = post.zeta.sd[i]
+    )
+    fixed_simulations[[cluster_var[i]]] <- sims
+    zeta_summary[i, ] <- quantile(
+      sims,
+      prob = c(0.5, 0.025, 0.975),
+      na.rm = TRUE
+    )
+  }
+  rownames(zeta_summary) <- paste0(rep(cluster_var, each=J),"_sp",1:J)
+  colnames(zeta_summary) <- c(
+    "median",
+    "lower_95",
+    "upper_95"
+  )
+  fixed_summary <- list(beta = beta_summary,
+                        zeta_spatial = zeta_summary)
+  var_names <- c(
+    "sigma_r_hat",
+    "sigma_u_hat",
+    "sigma_nu_hat",
+    "sigma_zeta_hat",
+    "sigma_y_hat"
+  )
+  cov_para <- solve(
+    -out$hessian[var_names, var_names]
+  )
+  sig_means <- out$par[var_names]
+  sig_sds <- sqrt(diag(cov_para))
+  variability_summary <- matrix(
+    NA,
+    nrow = length(var_names),
+    ncol = 3
+  )
+  for (i in seq_along(var_names)) {
+    sims <- rnorm(
+      sim,
+      mean = sig_means[i],
+      sd = sig_sds[i]
+    )
+    sims[sims < 0] <- 0
+    variability_simulations[[var_names[i]]] <- sims
+    variability_summary[i, ] <- quantile(
+      sims,
+      prob = c(0.5, 0.025, 0.975),
+      na.rm = TRUE
+    )
+  }
+  rownames(variability_summary) <- var_names
+  colnames(variability_summary) <- c(
+    "median",
+    "lower_95",
+    "upper_95"
+  )
+  ##
+  df <- data$data
+  df$pred <- out$par[grep("y_pred", names(out$par))]
+  ## cluster-level summary by clst
+  cluster_summary <- df %>%
+    group_by(clst) %>%
+    dplyr::summarise(
+      pred_mean = mean(pred, na.rm = TRUE),
+      pred_low  = quantile(pred, 0.025, na.rm = TRUE),
+      pred_up   = quantile(pred, 0.975, na.rm = TRUE),
+      .groups = "drop"
+    )
+  ##
+  log_lik_vec <- dnorm(df[,1+Q+1], mean = df$pred,
+                       sd = variability_summary[4,1],log = TRUE)
+  lppd <- sum(log_lik_vec); waic_approx <- -2 * (lppd)
+  ## extract zstart values to store
+  zstar_hat <- out$par[grep("z_effect", names(out$par))]
+  zstar_hat <- matrix(zstar_hat, nrow = length(unique(df$clst)))
+  zstar_hat <- data.frame(clst = unique(df$clst), zstar_hat)
+  names(zstar_hat)[-1] = c(cluster_var)
+  zstar_hat <- tibble(zstar_hat)
+  ##
+  return(list(
+    fixed_parameters = round(fixed_summary$beta, digits),
+    spatial_parameters = round(fixed_summary$zeta_spatial, digits),
+    variability_parameters = round(variability_summary, digits),
+    simulations = tibble(data.frame(fixed_simulations,variability_simulations)),
+    cluster_summary =  cluster_summary,
+    zstarEffect_scaled = zstar_hat,
+    waic_approx = waic_approx
+  ))
+  ##
+}
+
+## run function for cont. outcome with spatially varying model
+
+run_fnc_gaussian_sp <- function(data,
+                                cluster_var = c("Precipitation_2020"),
+                                digits=4,
+                                draws = 10){
+  ##
+  stan_file <- system.file(
+    "stan",
+    "svyLocAdj_gaussian_sp.stan",
+    package = "svyLocAdj"
+  )
+  model <- rstan::stan_model(stan_file)
+  out <- rstan::optimizing(model, data = data$data_list_stan,
+                           hessian = TRUE, draws = draws,
+                           importance_resampling = TRUE)
+  para <- evolve_summary_gaussian_sp(data = data, out = out,
+                                     cluster_var = cluster_var,
+                                     digits = digits)
+  para
+  ##
+}
+
 
 ################################################################################
 ################################################################################

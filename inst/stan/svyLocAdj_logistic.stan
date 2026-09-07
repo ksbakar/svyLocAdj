@@ -89,7 +89,8 @@
   }
   generated quantities {
     vector[N] y_prob;
-    int<lower=0, upper=1> y_pred[N];
+    array[N] int<lower=1, upper=2> y_pred;
+    //int<lower=0, upper=1> y_pred[N];
     //vector[N] log_lik;
     vector[J] z_effect;
     vector[N] zstar_hat_scaled;

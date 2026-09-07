@@ -32,7 +32,7 @@ parameters {
   real<lower=0> sigma_nu_hat;
   real<lower=0> sigma_u_hat;
   real<lower=0> sigma_r_hat;
-  real<lower=0> sigma_y;          // residual SD
+  real<lower=0> sigma_y_hat;          // residual SD
 }
 model {
   matrix[J,M] Dstar_phi;
@@ -40,11 +40,11 @@ model {
   matrix[J,Q] Psi_eta;
   matrix[J,Q] zstar_hat;
   vector[N] eta;
-  
+
   sigma_u_hat ~ inv_gamma(sig_u_shape, sig_u_scale);
   sigma_r_hat ~ inv_gamma(sig_r_shape, sig_r_scale);
-  sigma_nu_hat ~ inv_gamma(sig_nu_shape, sig_nu_shape);
-  sigma_y ~ inv_gamma(sig_nu_shape, sig_nu_scale);
+  sigma_nu_hat ~ inv_gamma(sig_nu_shape, sig_nu_scale);
+  sigma_y_hat ~ inv_gamma(sig_nu_shape, sig_nu_scale);
 
   beta ~ normal(beta_mu, beta_sd);
   zeta ~ normal(zeta_mu, zeta_sd);
@@ -59,7 +59,7 @@ model {
       Dstar_phi[j,m] = square(1 - square(Dstar[j,m] / phi));
     }
   }
-  
+
   Psi = MJJ * Dstar_phi;
   Psi_eta = Psi * Sigma_diag;
 
@@ -71,7 +71,7 @@ model {
     }
   }
   eta = x * beta + IMAT * (zstar_hat * zeta);
-  y ~ normal(eta, sigma_y);
+  y ~ normal(eta, sigma_y_hat);
 }
 generated quantities {
   vector[N] y_mean;
@@ -80,12 +80,10 @@ generated quantities {
   vector[N] zstar_hat_scaled;
 
   z_effect = zstar * zeta;
-  zstar_hat_scaled =
-    IMAT * z_effect;
-  y_mean =
-    x * beta + zstar_hat_scaled;
+  zstar_hat_scaled =  IMAT * z_effect;
+  y_mean = x * beta + zstar_hat_scaled;
   for(i in 1:N){
     y_pred[i] =
-      normal_rng(y_mean[i], sigma_y);
+      normal_rng(y_mean[i], sigma_y_hat);
   }
 }
