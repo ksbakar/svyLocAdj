@@ -1,6 +1,6 @@
 Package: svyLocAdj
 Type: Package
-Title: Modelling survey data (e.g., DHS) with adjustment for location perturbations
+Title: Modelling Survey Data (E.g., DHS) with Adjustment for Location Perturbations
 Version: 1.0.1
 Date: 2026-06-01
 Authors@R: 
@@ -19,8 +19,8 @@ Authors@R:
              comment = c(ORCID = "0000-0002-9820-2617"))			 
 			 )
 Depends: R (>= 4.5)
-Description: What the package does (one paragraph).
+Description: This package implements Bayesian models for DHS data with spatial adjustments.
 License:  GPL (>= 2)
-Imports: rstan, sf, geodist, ggplot2, dplyr, tibble, spTDyn, spTimer
+Imports: rstan, sf, geodist, ggplot2, dplyr, tibble, spTimer
 LazyData: yes
 Encoding: UTF-8

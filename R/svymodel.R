@@ -4,7 +4,7 @@
 ################################################################################
 
 svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
-                   data = y,
+                   data,
                    family = "binomial", #gaussian, #poisson, #gaussian_sp
                    id_var = c("DHSCLUST"),
                    coord_var = c("LONGNUM","LATNUM"),
@@ -92,9 +92,9 @@ svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
     res$sp_data = dat$sp_data
     class(res) <- "svyLocAdj"
   }
-  #if(family!="binomial" | family!="gaussian"){
-  #  stop("family can take 'binomial' and 'gaussian' options")
-  #}
+  if(!family%in%c("binomial","gaussian","gaussian_sp","poisson")){
+    stop("family can take 'binomial', 'gaussian', 'gaussian_sp', 'poisson' options")
+  }
   cat("Finished.\n")
   res
   ##

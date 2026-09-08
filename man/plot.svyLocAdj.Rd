@@ -1,8 +1,6 @@
-\name{plot.svyLocAdj}
-\alias{plot}
-
+\name{plot}
+\alias{plot.svyLocAdj}
 \title{Plot Method for svyLocAdj Objects}
-
 \description{
 Produces graphical summaries of a fitted \code{svyLocAdj} model.
 Depending on the selected plot type, the method displays either a
@@ -11,14 +9,12 @@ parameter estimates and their uncertainty intervals.
 }
 
 \usage{
-\method{plot}{svyLocAdj}(x, type = c("map", "para"), title = "Forest Plot",
-                         drop_intercept = FALSE, ...)
+\method{plot}{svyLocAdj}(x, type, title, drop_intercept, ...)
 }
 
 \arguments{
 \item{x}{
-An object of class \code{"svyLocAdj"} returned by
-\code{\link{svyLocAdj}}.
+An object of class \code{"svyLocAdj"}.
 }
 
 \item{type}{
@@ -65,16 +61,19 @@ the spatial component of the model.
 
 \seealso{
 \code{\link{svymodel}},
-\code{\link[svyLocAdj]{summary}}
+\code{\link{summary.svyLocAdj}}
 }
 
 \examples{
+\dontrun{
 
 ## Not run:
 
+head(sample_data)
+
 fit <- svymodel(
-formula = y ~ age_of_child + precipitation,
-data = dat
+  formula = ch_stunt ~ age_of_child,
+  data = sample_data
 )
 
 # Spatial map
@@ -95,6 +94,7 @@ plot(fit, type = "map")
 
 ## End(Not run)
 
+}
 }
 
 \keyword{models}

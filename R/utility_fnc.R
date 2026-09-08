@@ -10,7 +10,7 @@ create_area_grid <- function(data_val, # data.frame(lon,lat,type)
                              crs = 4326) {
   ##
   options(warn=-1)
-  names(data_val)[3] <- "Area"
+  names(data_val)[3] <- c("Area")
   data_val$id_J <- 1:nrow(data_val)
   points_sf <- st_as_sf(
     x = data_val,
@@ -58,7 +58,7 @@ create_area_grid <- function(data_val, # data.frame(lon,lat,type)
     ) +
     geom_sf(
       data = points_sf,
-      aes(color = Area, shape = Area),
+      aes(color = .data$Area, shape = .data$Area),
       size = 2,
       alpha = 1
     ) +
@@ -317,13 +317,13 @@ evolve_summary_binary <- function(data, out, cluster_var,
   df$pred_prob <- out$par[grep("y_prob", names(out$par))]
   ## cluster-level summary by clst
   cluster_summary <- df %>%
-    group_by(clst) %>%
+    dplyr::group_by(.data$clst) %>%
     dplyr::summarise(
-      prob_mean = mean(pred_prob, na.rm = TRUE),
-      prob_sd = sd(pred_prob, na.rm = TRUE),
-      prob_median = median(pred_prob, na.rm = TRUE),
-      prob_low  = quantile(pred_prob, 0.025, na.rm = TRUE),
-      prob_up   = quantile(pred_prob, 0.975, na.rm = TRUE),
+      prob_mean = mean(.data$pred_prob, na.rm = TRUE),
+      prob_sd = sd(.data$pred_prob, na.rm = TRUE),
+      prob_median = median(.data$pred_prob, na.rm = TRUE),
+      prob_low  = quantile(.data$pred_prob, 0.025, na.rm = TRUE),
+      prob_up   = quantile(.data$pred_prob, 0.975, na.rm = TRUE),
       .groups = "drop"
     )
   ## log-lilekihood, approximate waic
@@ -473,11 +473,11 @@ evolve_summary_gaussian <- function(data, out, cluster_var,
   df$pred <- out$par[grep("y_pred", names(out$par))]
   ## cluster-level summary by clst
   cluster_summary <- df %>%
-    group_by(clst) %>%
+    dplyr::group_by(.data$clst) %>%
     dplyr::summarise(
-      pred_mean = mean(pred, na.rm = TRUE),
-      pred_low  = quantile(pred, 0.025, na.rm = TRUE),
-      pred_up   = quantile(pred, 0.975, na.rm = TRUE),
+      pred_mean = mean(.data$pred, na.rm = TRUE),
+      pred_low  = quantile(.data$pred, 0.025, na.rm = TRUE),
+      pred_up   = quantile(.data$pred, 0.975, na.rm = TRUE),
       .groups = "drop"
     )
   ##
@@ -634,13 +634,13 @@ evolve_summary_poisson <- function(data, out, cluster_var,
     grep("lambda", names(out$par))
   ]
   cluster_summary <- df %>%
-    group_by(clst) %>%
+    dplyr::group_by(.data$clst) %>%
     dplyr::summarise(
-      lambda_mean   = mean(lambda, na.rm = TRUE),
-      lambda_sd     = sd(lambda, na.rm = TRUE),
-      lambda_median = median(lambda, na.rm = TRUE),
-      lambda_low    = quantile(lambda, 0.025, na.rm = TRUE),
-      lambda_up     = quantile(lambda, 0.975, na.rm = TRUE),
+      lambda_mean   = mean(.data$lambda, na.rm = TRUE),
+      lambda_sd     = sd(.data$lambda, na.rm = TRUE),
+      lambda_median = median(.data$lambda, na.rm = TRUE),
+      lambda_low    = quantile(.data$lambda, 0.025, na.rm = TRUE),
+      lambda_up     = quantile(.data$lambda, 0.975, na.rm = TRUE),
       .groups = "drop"
     )
   ## assumes outcome variable is column (Q + 2)
@@ -796,11 +796,11 @@ evolve_summary_gaussian_sp <- function(data, out, cluster_var,
   df$pred <- out$par[grep("y_pred", names(out$par))]
   ## cluster-level summary by clst
   cluster_summary <- df %>%
-    group_by(clst) %>%
+    dplyr::group_by(.data$clst) %>%
     dplyr::summarise(
-      pred_mean = mean(pred, na.rm = TRUE),
-      pred_low  = quantile(pred, 0.025, na.rm = TRUE),
-      pred_up   = quantile(pred, 0.975, na.rm = TRUE),
+      pred_mean = mean(.data$pred, na.rm = TRUE),
+      pred_low  = quantile(.data$pred, 0.025, na.rm = TRUE),
+      pred_up   = quantile(.data$pred, 0.975, na.rm = TRUE),
       .groups = "drop"
     )
   ##
@@ -852,8 +852,5 @@ run_fnc_gaussian_sp <- function(data,
 
 ################################################################################
 ################################################################################
-
-
-
 
 

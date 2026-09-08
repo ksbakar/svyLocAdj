@@ -29,17 +29,13 @@ plot.svyLocAdj <- function(x, type = "map",
       )
       if(isTRUE(drop_intercept)){ df = df[-1,]}
       # forest plot
-      p <- ggplot(df, aes(x = est, y = variable)) +
+      p <- ggplot2::ggplot(df, aes(x = .data$est, y = .data$variable)) +
         geom_point(size = 3.5, shape = 21, fill = "#2C7FB8", color = "black", stroke = 0.4) +
-        geom_errorbarh(aes(xmin = lower, xmax = upper),
+        geom_errorbar(aes(xmin = .data$lower, xmax = .data$upper),
                        width = 0.15,
                        linewidth = 0.8,
                        color = "gray35") +
         geom_vline(xintercept = 1, linetype = "dashed", linewidth = 0.8, color = "gray50") +
-        #scale_x_log10(
-        #  breaks = scales::pretty_breaks(n = 6),
-        #  labels = scales::label_number(accuracy = 0.01)
-        #) +
         labs(
           x = "Odds Ratio",
           y = NULL,
@@ -66,9 +62,9 @@ plot.svyLocAdj <- function(x, type = "map",
       )
       if(isTRUE(drop_intercept)){ df = df[-1,]}
       # forest plot
-      p <- ggplot(df, aes(x = est, y = variable)) +
+      p <- ggplot2::ggplot(df, aes(x = .data$est, y = .data$variable)) +
         geom_point(size = 3.5, shape = 21, fill = "#2C7FB8", color = "black", stroke = 0.4) +
-        geom_errorbarh(aes(xmin = lower, xmax = upper),
+        geom_errorbar(aes(xmin = .data$lower, xmax = .data$upper),
                        width = 0.15,
                        linewidth = 0.8,
                        color = "gray35") +
@@ -99,7 +95,7 @@ plot.svyLocAdj <- function(x, type = "map",
       )
       #if(isTRUE(drop_intercept)){ df = df[-1,]}
       df <- df %>%
-        mutate(
+        dplyr::mutate(
           significance = case_when(
             lower > 0 & upper > 0 ~ "Significant",
             lower < 0 & upper < 0 ~ "Significant",
@@ -108,14 +104,14 @@ plot.svyLocAdj <- function(x, type = "map",
         )
       # forest plot
       df <- df %>%
-        mutate(
+        dplyr::mutate(
           variable_label = ifelse(
-            significance == "Significant",
-            as.character(variable),
+            .data$significance == "Significant",
+            as.character(.data$variable),
             ""
           )
         )
-      p <- ggplot(df, aes(x = est, y = variable)) +
+      p <- ggplot2::ggplot(df, aes(x = .data$est, y = .data$variable)) +
         # All variables
         geom_point(
           size = 2.5,
@@ -126,15 +122,15 @@ plot.svyLocAdj <- function(x, type = "map",
         ) +
         # Significant variables
         geom_errorbar(
-          data = subset(df, significance == "Significant"),
-          aes(xmin = lower, xmax = upper),
+          data = dplyr::filter(df, .data$significance == "Significant"),
+          aes(xmin = .data$lower, xmax = .data$upper),
           width = 0.15,
           linewidth = 0.9,
           color = "#2C7FB8",
           orientation = "y"
         ) +
         geom_point(
-          data = subset(df, significance == "Significant"),
+          data = dplyr::filter(df, .data$significance == "Significant"),
           size = 3.5,
           shape = 21,
           fill = "#2C7FB8",
@@ -182,9 +178,9 @@ plot.svyLocAdj <- function(x, type = "map",
       )
       if(isTRUE(drop_intercept)){ df = df[-1,]}
       # forest plot
-      p <- ggplot(df, aes(x = est, y = variable)) +
+      p <- ggplot2::ggplot(df, aes(x = .data$est, y = .data$variable)) +
         geom_point(size = 3.5, shape = 21, fill = "#2C7FB8", color = "black", stroke = 0.4) +
-        geom_errorbarh(aes(xmin = lower, xmax = upper),
+        geom_errorbar(aes(xmin = .data$lower, xmax = .data$upper),
                        width = 0.15,
                        linewidth = 0.8,
                        color = "gray35") +
@@ -219,7 +215,7 @@ summary.svyLocAdj <- function(object, ...){
   cat(paste0("----------------------------\n"))
   waic <- data.frame(waic_approximation = object$results$waic_approx)
   row.names(waic) <- c("Est.")
-  cat(paste0("Watanabe–Akaike information criterion \n"))
+  cat(paste0("Watanabe-Akaike information criterion \n"))
   print(t(waic))
   cat(paste0("----------------------------\n"))
 }

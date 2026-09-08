@@ -1,5 +1,5 @@
-\name{summary.svyLocAdj}
-\alias{summary}
+\name{summary}
+\alias{summary.svyLocAdj}
 \title{Summary for svyLocAdj Objects}
 \description{
 Produces a summary of a fitted \code{svyLocAdj} model, including
@@ -13,8 +13,7 @@ fit statistics based on the Watanabe-Akaike Information Criterion (WAIC).
 
 \arguments{
   \item{object}{
-    An object of class \code{"svyLocAdj"} returned by
-    \code{\link{svyLocAdj}}.
+    An object of class \code{"svyLocAdj"}.
   }
 
   \item{\dots}{
@@ -40,18 +39,25 @@ overall model fit.
 
 \seealso{
 \code{\link{svymodel}},
-\code{\link[svyLocAdj]{plot}}
+\code{\link{plot.svyLocAdj}}
 }
 
 \examples{
+\dontrun{
+
 ## Not run:
+
+head(sample_data)
+
 fit <- svymodel(
-  formula = y ~ x1 + x2,
-  data = dat
+  formula = ch_stunt ~ age_of_child,
+  data = sample_data
 )
 
 summary(fit)
+
 ## End(Not run)
+}
 }
 
 \keyword{models}

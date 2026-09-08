@@ -140,8 +140,8 @@ doi:10.1093/jrsssa/qnag068
 }
 
 \seealso{
-\code{\link[svyLocAdj]{summary}},
-\code{\link[svyLocAdj]{plot}}
+\code{\link{summary.svyLocAdj}},
+\code{\link{plot.svyLocAdj}}
 }
 
 \examples{

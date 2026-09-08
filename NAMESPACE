@@ -8,19 +8,18 @@ import(dplyr)
 import(tibble)
 import(spTimer)
 
-importFrom("stats", "median", "quantile", "sd",
-           "dbinom", "dnorm", "dpois", "rnorm", "rgamma", 
+importFrom("stats", "setNames", "median", "quantile", "sd",
+           "dbinom", "dnorm", "dpois", "rnorm", "rgamma",
            "as.formula", "model.frame", "model.matrix")
 
 importFrom("spTimer", "Formula.matrix")
-importFrom("spTDyn", "sp")
 
 S3method(print,svyLocAdj)
 S3method(plot,svyLocAdj)
 S3method(summary,svyLocAdj)
 
 export(
-       "svymodel",
+     "svymodel",
 	   "print.svyLocAdj",
 	   "plot.svyLocAdj",
 	   "summary.svyLocAdj"

@@ -1,0 +1,17 @@
+bibentry(
+  bibtype = "Article",
+  title   = "A Bayesian model adjusted for location perturbations in sample surveys: with application to the analysis of demographic health survey data",
+  author  = c(
+    "Bakar, KS",
+    "Baffour, B",
+    "Khan, JR",
+    "Ayebeng, C"
+  ),
+  journal = "Journal of the Royal Statistical Society Series A: Statistics in Society",
+  year    = 2026,
+  volume  = 0,
+  number  = 0,
+  pages   = "1--19",
+  doi     = "10.1093/jrsssa/qnag068",
+  url     = "https://doi.org/10.1093/jrsssa/qnag068"
+)
