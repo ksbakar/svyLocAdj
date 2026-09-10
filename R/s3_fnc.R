@@ -68,7 +68,7 @@ plot.svyLocAdj <- function(x, type = "map",
                        width = 0.15,
                        linewidth = 0.8,
                        color = "gray35") +
-        geom_vline(xintercept = 1, linetype = "dashed", linewidth = 0.8, color = "gray50") +
+        geom_vline(xintercept = 0, linetype = "dashed", linewidth = 0.8, color = "gray50") +
         labs(
           x = "Estimate",
           y = NULL,
@@ -113,55 +113,22 @@ plot.svyLocAdj <- function(x, type = "map",
         )
       p <- ggplot2::ggplot(df, aes(x = .data$est, y = .data$variable)) +
         # All variables
-        geom_point(
-          size = 2.5,
-          shape = 21,
-          fill = "gray75",
-          color = "gray50",
-          stroke = 0.3
-        ) +
+        geom_point(size=2.5, shape=21, fill="gray75", color="gray50", stroke=0.3) +
         # Significant variables
         geom_errorbar(
           data = dplyr::filter(df, .data$significance == "Significant"),
           aes(xmin = .data$lower, xmax = .data$upper),
-          width = 0.15,
-          linewidth = 0.9,
-          color = "#2C7FB8",
-          orientation = "y"
-        ) +
+          width = 0.15, linewidth = 0.9, color = "#2C7FB8", orientation = "y") +
         geom_point(
           data = dplyr::filter(df, .data$significance == "Significant"),
-          size = 3.5,
-          shape = 21,
-          fill = "#2C7FB8",
-          color = "black",
-          stroke = 0.4
-        ) +
-        geom_vline(
-          xintercept = 0,
-          linetype = "dashed",
-          linewidth = 0.8,
-          color = "gray50"
-        ) +
-        scale_y_discrete(
-          labels = setNames(df$variable_label, df$variable)
-        ) +
-        labs(
-          x = "Estimate",
-          y = NULL,
-          title = title
-        ) +
+          size = 3.5, shape = 21, fill = "#2C7FB8", color = "black", stroke = 0.4) +
+        geom_vline(xintercept = 0, linetype = "dashed", linewidth = 0.8, color = "gray50") +
+        scale_y_discrete(labels = setNames(df$variable_label, df$variable)) +
+        labs(x = "Estimate", y = NULL,  title = title) +
         theme_minimal(base_size = 13) +
         theme(
-          plot.title = element_text(
-            face = "bold",
-            size = 14,
-            hjust = 0.5
-          ),
-          axis.text.y = element_text(
-            size = 9,
-            color = "black"
-          ),
+          plot.title = element_text(face = "bold",size = 14,hjust = 0.5),
+          axis.text.y = element_text(size = 9, color = "black"),
           axis.text.x = element_text(size = 10),
           panel.grid.minor = element_blank(),
           panel.grid.major.y = element_blank()
