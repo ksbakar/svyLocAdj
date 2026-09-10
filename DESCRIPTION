@@ -19,7 +19,7 @@ Authors@R:
              comment = c(ORCID = "0000-0002-9820-2617"))			 
 			 )
 Depends: R (>= 4.5)
-Description: This package implements Bayesian models for DHS data with spatial adjustments.
+Description: Bayesian spatial models for survey data, such as Demographic and Health Survey (DHS), with spatial cluster location displacement adjustments. The svyLocAdj package implements models for (1) continuous outcomes ("gaussian"), (2) binary outcomes ("binomial"), (3) count outcomes ("poisson") and (4) spatially varying models for continuous outcomes ("gaussian_sp").
 License:  GPL (>= 2)
 Imports: rstan, sf, geodist, ggplot2, dplyr, tibble, spTimer
 LazyData: yes

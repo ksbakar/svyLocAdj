@@ -75,12 +75,10 @@ transformed parameters {
   // Each observation receives the coefficients
   // belonging to its cluster.
   zeta_obs = IMAT * zeta;
-  // eta_z[j] = sum_q zstar_hat[j,q] * zeta[j,q]
   eta_z = rep_vector(0, J);
   for (q in 1:Q) {
     eta_z +=  zstar_hat[,q] .* zeta[,q];
   }
-  // eta[i] =  x[i] * beta + sum_q (zzstar[i,q] * zeta_obs[i,q])
   eta = x * beta + rows_dot_product(zzstar, zeta_obs);
 }
 model {
@@ -89,9 +87,7 @@ model {
   sigma_nu_hat ~ inv_gamma(sig_nu_shape,sig_nu_scale);
   sigma_y_hat ~ inv_gamma(sig_nu_shape,sig_nu_scale);
   sigma_zeta_hat ~ inv_gamma(sig_nu_shape,sig_nu_scale);
-
   beta ~ normal(beta_mu,beta_sd);
-  //to_vector(zeta) ~ normal(zeta_mu,zeta_sd);
   for (q in 1:Q){
     for (j in 1:J){
       zeta[j,q] ~ normal(zeta_mu, zeta_sd[j]);

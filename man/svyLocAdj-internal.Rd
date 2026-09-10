@@ -12,8 +12,6 @@
 \alias{run_fnc_gaussian}
 \alias{run_fnc_gaussian_sp}
 \alias{run_fnc_poisson}
-%\alias{sample_data}
-%\alias{svymodel}
 \description{Internal svyLocAdj functions}
 \keyword{internal}
 

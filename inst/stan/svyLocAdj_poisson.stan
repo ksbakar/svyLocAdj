@@ -83,7 +83,7 @@ model {
 }
 generated quantities {
   vector[N] lambda;
-  array[N] int y_pred;
+  array[N] int<lower=0> y_pred;
   vector[J] z_effect;
   vector[N] zstar_hat_scaled;
   z_effect = zstar * zeta;
