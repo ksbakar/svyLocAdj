@@ -1,4 +1,4 @@
-2026-06-01  
+2026-00-10
 
 	* Version 1.0.1
 	* Current models: "gaussian", "gaussian_sp" (spatially varying), "binomial", "poisson"

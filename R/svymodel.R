@@ -19,8 +19,8 @@ svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
                    digits=4, draws = 10){
   ##
   if(family%in%"binomial"){
-    cat(paste0("Bayesian model for binary outcome ...\n"))
-    cat("...\n")
+    message(paste0("Bayesian model for binary outcome ...\n"))
+    message("...\n")
     dat <- prepare_stan_data(f = formula,  data = data,  id_var = id_var,
            coord_var = coord_var, cluster_var = cluster_var,
            urban_rural_var = urban_rural_var, grid_x = grid_x,
@@ -37,8 +37,8 @@ svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
     class(res) <- "svyLocAdj"
   }
   if(family%in%"gaussian"){
-    cat(paste0("Bayesian model for continuous outcome ...\n"))
-    cat("...\n")
+    message(paste0("Bayesian model for continuous outcome ...\n"))
+    message("...\n")
     dat <- prepare_stan_data(f = formula,  data = data,  id_var = id_var,
                              coord_var = coord_var, cluster_var = cluster_var,
                              urban_rural_var = urban_rural_var, grid_x = grid_x,
@@ -55,8 +55,8 @@ svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
     class(res) <- "svyLocAdj"
   }
   if(family%in%"gaussian_sp"){
-    cat(paste0("Bayesian spatially varying model\n for continuous outcome ...\n"))
-    cat("...\n")
+    message(paste0("Bayesian spatially varying model\n for continuous outcome ...\n"))
+    message("...\n")
     dat <- prepare_stan_data(f = formula,  data = data,  id_var = id_var,
                              coord_var = coord_var, cluster_var = cluster_var,
                              urban_rural_var = urban_rural_var, grid_x = grid_x,
@@ -64,7 +64,6 @@ svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
                              sigma_r_prior = sigma_r_prior, sigma_nu_prior = sigma_nu_prior,
                              beta_prior = beta_prior, zeta_prior = zeta_prior)
     dat$data_list_stan$zeta_sd <- diag(c(dat$W%*%rep(1,dat$data_list_stan$J))-dat$W)
-    #dat$data_list_stan$zeta_sd <- rowSums(c(dat$W%*%rep(1,dat$data_list_stan$J))-dat$W)
     out <- run_fnc_gaussian_sp(data = dat, cluster_var = cluster_var,
                             digits = digits, draws = draws)
     out$family <- family
@@ -75,8 +74,8 @@ svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
     class(res) <- "svyLocAdj"
   }
   if(family%in%"poisson"){
-    cat(paste0("Bayesian model for count data ...\n"))
-    cat("...\n")
+    message(paste0("Bayesian model for count data ...\n"))
+    message("...\n")
     dat <- prepare_stan_data(f = formula,  data = data,  id_var = id_var,
                              coord_var = coord_var, cluster_var = cluster_var,
                              urban_rural_var = urban_rural_var, grid_x = grid_x,
@@ -95,7 +94,7 @@ svymodel <- function(formula = as.formula(ch_stunt ~ age_of_child),
   if(!family%in%c("binomial","gaussian","gaussian_sp","poisson")){
     stop("family can take 'binomial', 'gaussian', 'gaussian_sp', 'poisson' options")
   }
-  cat("Finished.\n")
+  message("Finished.\n")
   res
   ##
 }

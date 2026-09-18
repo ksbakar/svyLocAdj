@@ -9,7 +9,7 @@ create_area_grid <- function(data_val, # data.frame(lon,lat,type)
                              grid_x = 3, grid_y = 4,
                              crs = 4326) {
   ##
-  options(warn=-1)
+  #options(warn=-1)
   names(data_val)[3] <- c("Area")
   data_val$id_J <- 1:nrow(data_val)
   points_sf <- st_as_sf(
@@ -178,9 +178,6 @@ prepare_stan_data <- function(f,
   zstar <- z[,1] + Psi_eta  # true - initial
   ## scale z - initial
   z_scale <- scale(cbind(z[,1], zstar))
-  #X_block <- matrix(0, N, J)
-  #cluster_factor <- as.numeric(factor(df$DHSCLUST))
-  #X_block[cbind(1:N, cluster_factor)] <- z
   ## data list
   data_list <- list(
     N = nrow(x),

@@ -13,50 +13,39 @@ parameter estimates and their uncertainty intervals.
 }
 
 \arguments{
-\item{x}{
-An object of class \code{"svyLocAdj"}.
-}
+\item{x}{An object of class \code{"svyLocAdj"}.}
 
-\item{type}{
-Character string specifying the type of plot to produce.
-Supported values are:
+\item{type}{Character string specifying the type of plot to produce. Supported values are:
 \describe{
 \item{\code{"map"}}{Displays the spatial map stored in the fitted model object.}
 \item{\code{"para"}}{Displays a forest plot of fixed-effect parameter estimates and their uncertainty intervals.}
 }
 }
 
-\item{title}{
-Title used for the forest plot when \code{type = "para"}.
-}
+\item{title}{Title used for the forest plot when \code{type = "para"}.}
 
-\item{drop_intercept}{
-TRUE or FALSE argument, if TRUE then plot intercept.
-}
+\item{drop_intercept}{TRUE or FALSE argument, if TRUE then plot intercept.}
 
-\item{\dots}{
-Additional arguments passed to or from other methods.
-}
+\item{\dots}{Additional arguments passed to or from other methods.}
+
 }
 
 \details{
-The plotting method provides two complementary visualizations of a fitted
-\code{svyLocAdj} model:
+
+The plotting method provides two complementary visualizations of a fitted \code{svyLocAdj} model:
 
 \itemize{
-\item \strong{Map plot} (\code{type = "map"}): displays the spatial
-output associated with the fitted model, typically showing adjusted
-survey cluster locations and related geographic information.
+\item \strong{Map plot} (\code{type = "map"}): displays the spatial output associated with the fitted model, typically showing adjusted survey cluster locations and related geographic information.
 
-\item \strong{Parameter plot} (\code{type = "para"}): displays a forest
-plot of the fixed-effect parameter estimates. Point estimates are shown
-together with their corresponding uncertainty intervals on the odds-ratio
-scale.
+\item \strong{Parameter plot} (\code{type = "para"}): displays a forest plot of the fixed-effect parameter estimates. Point estimates are shown together with their corresponding uncertainty intervals on the odds-ratio scale.
 }
 
-The parameter plot is useful for assessing the magnitude and direction
-of covariate effects, while the map plot provides a visual summary of
-the spatial component of the model.
+The parameter plot is useful for assessing the magnitude and direction of covariate effects, while the map plot provides a visual summary of the spatial component of the model.
+
+}
+
+\value{
+  Plot output.
 }
 
 \seealso{
@@ -65,7 +54,7 @@ the spatial component of the model.
 }
 
 \examples{
-\dontrun{
+\donttest{
 
 ## Not run:
 

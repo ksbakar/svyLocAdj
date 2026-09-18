@@ -38,7 +38,7 @@ NYgrid: This dataset contains total 6200 rows for 62 days of observations for 10
 \code{\link{plot.svyLocAdj}}
 }
 \examples{
-\dontrun{
+\donttest{
 ##
 
 head(sample_data)

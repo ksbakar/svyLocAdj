@@ -13,5 +13,7 @@
 \alias{run_fnc_gaussian_sp}
 \alias{run_fnc_poisson}
 \description{Internal svyLocAdj functions}
+\value{List of internal functions.}
+
 \keyword{internal}
 

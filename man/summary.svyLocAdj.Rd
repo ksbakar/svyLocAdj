@@ -6,22 +6,13 @@ Produces a summary of a fitted \code{svyLocAdj} model, including
 fixed-effect parameter estimates, variability parameters, and model
 fit statistics based on the Watanabe-Akaike Information Criterion (WAIC).
 }
-
 \usage{
 \method{summary}{svyLocAdj}(object, ...)
 }
-
 \arguments{
-  \item{object}{
-    An object of class \code{"svyLocAdj"}.
-  }
-
-  \item{\dots}{
-    Additional arguments passed to or from other methods.
-    Currently ignored.
-  }
+\item{object}{An object of class \code{"svyLocAdj"}.}
+\item{\dots}{Additional arguments passed to or from other methods. Currently ignored.}
 }
-
 \details{
 The summary method displays:
 
@@ -37,13 +28,17 @@ The method is intended for a concise inspection of model estimates and
 overall model fit.
 }
 
+\value{
+  Summary output.
+}
+
 \seealso{
 \code{\link{svymodel}},
 \code{\link{plot.svyLocAdj}}
 }
 
 \examples{
-\dontrun{
+\donttest{
 
 ## Not run:
 
