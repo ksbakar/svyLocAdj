@@ -1,8 +1,8 @@
 Package: svyLocAdj
 Type: Package
 Title: Modelling Survey Data (E.g., DHS) with Adjustment for Location Perturbations
-Version: 1.0.1
-Date: 2026-09-10
+Version: 1.0.2
+Date: 2026-11-10
 Authors@R: 
     c(person(given = "K. Shuvo",
              family = "Bakar",

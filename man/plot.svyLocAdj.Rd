@@ -56,8 +56,6 @@ The parameter plot is useful for assessing the magnitude and direction of covari
 \examples{
 \donttest{
 
-## Not run:
-
 head(sample_data)
 
 fit <- svymodel(
@@ -80,8 +78,6 @@ plot(fit, type = "para", title = "Adjusted Odds Ratios")
 # Plot map
 
 plot(fit, type = "map")
-
-## End(Not run)
 
 }
 }

@@ -40,8 +40,6 @@ overall model fit.
 \examples{
 \donttest{
 
-## Not run:
-
 head(sample_data)
 
 fit <- svymodel(
@@ -51,7 +49,6 @@ fit <- svymodel(
 
 summary(fit)
 
-## End(Not run)
 }
 }
 

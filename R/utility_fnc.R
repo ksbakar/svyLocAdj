@@ -736,7 +736,7 @@ evolve_summary_gaussian_sp <- function(data, out, cluster_var,
       mean = post.zeta.mn[i],
       sd = post.zeta.sd[i]
     )
-    fixed_simulations[[cluster_var[i]]] <- sims
+    #fixed_simulations[[cluster_var[i]]] <- sims
     zeta_summary[i, ] <- quantile(
       sims,
       prob = c(0.5, 0.025, 0.975),
